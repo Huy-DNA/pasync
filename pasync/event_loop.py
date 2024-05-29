@@ -26,12 +26,14 @@ class EventLoop():
         self.__queue(_Task(awaitable))
         
         if self.__run_mode == _RunMode.NON_BLOCKING:
-            self.__push_cv.notify()
+            with self.__push_cv:
+                self.__push_cv.notify()
 
     def signal_stop(self):
         self.__run_mode = _RunMode.STOP_SIGNALLED
         if self.__run_mode == _RunMode.NON_BLOCKING:
-            self.__push_cv.notify()
+            with self.__push_cv:
+                self.__push_cv.notify()
 
     def run_non_blocking(self):
         if self.__run_mode != _RunMode.IDLE:
