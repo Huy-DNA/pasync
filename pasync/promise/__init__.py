@@ -73,10 +73,10 @@ class Promise(Generic[T1, E1, T2, E2]):
         next: Union[
             Callable[[T1], T2],
             Callable[[T1], Awaitable[T2]]],
-        handle: Union[
+        handle: Optional[Union[
             Callable[[E1], T2],
-            Callable[[E1], Awaitable[T2]]],
-    ) -> Promise[T2, E2, T3, Union[E3, Exception]]:
+            Callable[[E1], Awaitable[T2]]]],
+    ) -> Promise[T2, E2, T3, E3]:
         async def thenify(
             resolve: Callable[[T2], None],
             reject: Callable[[Union[E2, Exception]], None],
@@ -93,6 +93,9 @@ class Promise(Generic[T1, E1, T2, E2]):
                         resolve(resolve_result)
                     case PromiseState.Error:
                         any_error: Any = self.__error
+                        if not handle:
+                            reject(any_error)
+                            return
                         handle_result = handle(any_error)
                         while inspect.isawaitable(handle_result):
                             handle_result = await handle_result 
@@ -108,7 +111,7 @@ class Promise(Generic[T1, E1, T2, E2]):
         handle: Union[
             Callable[[E1], T2],
             Callable[[E1], Awaitable[T2]]],
-    ) -> Promise[T2, E2, T3, Union[E3, Exception]]:
+    ) -> Promise[T2, E2, T3, E3]:
         async def catchify(
             resolve: Callable[[T2], None],
             reject: Callable[[Union[E2, Exception]], None],
