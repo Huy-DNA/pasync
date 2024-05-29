@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "pasync"
+version = "0.1.0"
+description = "An event loop for python async"
+authors = ["Huy-DNA <huydo862003@gmail.com>"]
+readme = "README.md"
+package-mode = true
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
