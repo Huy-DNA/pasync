@@ -49,7 +49,7 @@ class EventLoop():
                 try:
                     task.step()
                     self.__queue(task)
-                except StopAsyncIteration:
+                except StopIteration:
                     pass
 
             self.__run_mode = _RunMode.IDLE
