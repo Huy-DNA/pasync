@@ -55,6 +55,7 @@ class EventLoop():
             self.__run_mode = _RunMode.IDLE
 
         self.__thread = Thread(target = run_continously) 
+        self.__thread.start()
 
     def run_blocking(self):
         if self.__run_mode != _RunMode.IDLE:
