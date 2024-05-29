@@ -17,6 +17,7 @@ class EventLoop():
         self.__task_queue = deque(tasks) 
         self.__run_mode = _RunMode.IDLE
         self.__push_cv = threading.Condition()
+        self.__thread = None
 
     def queue(self, awaitable: Awaitable):
         if self.__run_mode == _RunMode.STOP_SIGNALLED:
@@ -53,7 +54,7 @@ class EventLoop():
 
             self.__run_mode = _RunMode.IDLE
 
-        Thread(target = run_continously) 
+        self.__thread = Thread(target = run_continously) 
 
     def run_blocking(self):
         if self.__run_mode != _RunMode.IDLE:
@@ -68,6 +69,10 @@ class EventLoop():
                 pass
         
         self.__run_mode = _RunMode.IDLE
+
+    @property
+    def thread(self) -> Optional[Thread]:
+        return self.__thread
 
     def __queue(self, task: _Task):
         self.__task_queue.append(task)

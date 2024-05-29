@@ -8,6 +8,14 @@ class Runner():
         self.__non_blocking = non_blocking
         self.__is_non_blocking_running = False
 
+    def __enter__(self, *, event_loop = None, non_blocking = False):
+        return Runner(event_loop = event_loop, non_blocking = non_blocking)
+
+    def __exit__(self, exc_type, exc_value, exc_msg):
+        return False
+
+    def close(self):
+        
     def run(self, awaitable: Awaitable, *awaitables: Awaitable):
         if self.__non_blocking:
             self.__run_non_blocking(awaitable, *awaitables)
