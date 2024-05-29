@@ -39,18 +39,19 @@ class EventLoop():
         self.__run_mode = _RunMode.NON_BLOCKING
 
         def run_continously():
-            while len(self.__task_queue) or self.__run_mode != _RunMode.STOP_SIGNALLED:
-                task = self.__dequeue()
-                if not task:
-                    self.__push_cv.wait()
+            with self.__push_cv:
+                while len(self.__task_queue) or self.__run_mode != _RunMode.STOP_SIGNALLED:
                     task = self.__dequeue()
                     if not task:
-                        break
-                try:
-                    task.step()
-                    self.__queue(task)
-                except StopIteration:
-                    pass
+                        self.__push_cv.wait()
+                        task = self.__dequeue()
+                        if not task:
+                            break
+                    try:
+                        task.step()
+                        self.__queue(task)
+                    except StopIteration:
+                        pass
 
             self.__run_mode = _RunMode.IDLE
 
