@@ -14,7 +14,7 @@ def test_simple():
         await hello_async()
         await bye_async()
 
-    with Runner() as runner, redirect_stdout(io.StringIO()) as f:
+    with Runner(non_blocking = True) as runner, redirect_stdout(io.StringIO()) as f:
         runner.run(hello_async())
         runner.run(bye_async())
         runner.run(greeting_async())
