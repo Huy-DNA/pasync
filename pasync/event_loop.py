@@ -65,7 +65,7 @@ class EventLoop():
             try:
                 task.step()
                 self.__queue(task)
-            except StopAsyncIteration:
+            except StopIteration:
                 pass
         
         self.__run_mode = _RunMode.IDLE
@@ -81,4 +81,4 @@ class EventLoop():
         if len(self.__task_queue) == 0:
             return None
         return self.__task_queue.popleft()
-    
+ 
