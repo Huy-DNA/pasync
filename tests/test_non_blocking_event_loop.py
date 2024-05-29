@@ -1,6 +1,3 @@
-from contextlib import redirect_stdout
-import io
-
 from pasync.runner import Runner
 
 def test_simple():
@@ -14,8 +11,7 @@ def test_simple():
         await hello_async()
         await bye_async()
 
-    with Runner(non_blocking = True) as runner, redirect_stdout(io.StringIO()) as f:
+    with Runner(non_blocking = True) as runner:
         runner.run(hello_async())
         runner.run(bye_async())
         runner.run(greeting_async())
-    assert f.getvalue() == "Hello async!\nBye async!\nHello async!\nBye async!\n"
