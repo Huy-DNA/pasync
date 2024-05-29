@@ -4,7 +4,7 @@ from typing import List, Optional
 from collections import deque
 from threading import Thread
 
-from pasync.task import Task
+from pasync.task import Task as _Task
 
 class _RunMode(Enum):
     IDLE = 0
@@ -13,12 +13,12 @@ class _RunMode(Enum):
     STOP_SIGNALLED = 3
 
 class EventLoop():
-    def __init__(self, *tasks: List[Task]):
+    def __init__(self, *tasks: List[_Task]):
         self.__task_queue = deque(tasks) 
         self.__run_mode = _RunMode.IDLE
         self.__push_cv = threading.Condition()
 
-    def queue(self, task: Task):
+    def queue(self, task: _Task):
         if self.__run_mode == _RunMode.STOP_SIGNALLED:
             raise Exception("Warning: Queuing a task on an event queue that was signalled to stop has no effect") 
 
@@ -69,10 +69,10 @@ class EventLoop():
         
         self.__run_mode = _RunMode.IDLE
 
-    def __queue(self, task: Task):
+    def __queue(self, task: _Task):
         self.__task_queue.append(task)
 
-    def __dequeue(self) -> Optional[Task]:
+    def __dequeue(self) -> Optional[_Task]:
         if len(self.__task_queue) == 0:
             return None
         return self.__task_queue.popleft()
