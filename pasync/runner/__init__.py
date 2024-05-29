@@ -9,13 +9,17 @@ class Runner():
         self.__is_non_blocking_running = False
 
     def __enter__(self, *, event_loop = None, non_blocking = False):
-        return Runner(event_loop = event_loop, non_blocking = non_blocking)
+        return self
 
     def __exit__(self, exc_type, exc_value, exc_msg):
+        self.close()
         return False
 
     def close(self):
-        
+        if self.__is_non_blocking_running and self.__event_loop.thread:
+            self.__event_loop.signal_stop()
+            self.__event_loop.thread.join()
+
     def run(self, awaitable: Awaitable, *awaitables: Awaitable):
         if self.__non_blocking:
             self.__run_non_blocking(awaitable, *awaitables)
