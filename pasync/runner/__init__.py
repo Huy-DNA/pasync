@@ -21,7 +21,7 @@ class Runner():
             self.__event_loop.signal_stop()
             self.__event_loop.thread.join()
 
-    def run_all(self, *awaitables: Awaitable):
+    def gather(self, *awaitables: Awaitable):
         tasks = [_Task(awaitable) for awaitable in awaitables]
         if self.__non_blocking:
             self.__run_non_blocking(*tasks)

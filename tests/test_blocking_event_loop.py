@@ -15,9 +15,9 @@ def test_simple():
         await bye_async()
 
     with Runner() as runner, redirect_stdout(io.StringIO()) as f:
-        runner.run_all(hello_async())
-        runner.run_all(bye_async())
-        runner.run_all(greeting_async())
+        runner.gather(hello_async())
+        runner.gather(bye_async())
+        runner.gather(greeting_async())
     assert f.getvalue() == "Hello async!\nBye async!\nHello async!\nBye async!\n"
 
 def test_arithmetic():
@@ -37,4 +37,4 @@ def test_arithmetic():
         assert runner.run_task(gen_2()) == 2
         assert runner.run_task(gen_5()) == 5
 
-        assert runner.run_all(gen_2(), gen_3(), gen_5()) == [2, 3, 5]
+        assert runner.gather(gen_2(), gen_3(), gen_5()) == [2, 3, 5]
