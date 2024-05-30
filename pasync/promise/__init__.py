@@ -84,7 +84,8 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
         return self.__state
 
     def __await__(self):
-        yield from self.__awaitable.__await__()
+        while self.__awaitable:
+            yield from self.__awaitable.__await__()
 
     def then(
         self,
