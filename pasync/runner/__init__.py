@@ -8,7 +8,7 @@ class Runner():
         self.__non_blocking = non_blocking
         self.__is_non_blocking_running = False
 
-    def __enter__(self, *, event_loop = None, non_blocking = False):
+    def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, exc_msg):
