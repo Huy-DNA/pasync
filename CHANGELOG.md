@@ -8,7 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!-- insertion marker -->
 ## Unreleased
 
-<small>[Compare with latest](https://github.com/Huy-DNA/pasync/compare/39dcb9c42984191ff61a5b4ade4b5291c4c239c3...HEAD)</small>
+<small>[Compare with latest](https://github.com/Huy-DNA/pasync/compare/v0.2.0...HEAD)</small>
+
+### Fixed
+
+- fix: remove unimplemented stream ([07c1440](https://github.com/Huy-DNA/pasync/commit/07c144069c5ad892ef8726f16dbf9e9ffa194031) by Huy-DNA).
+
+<!-- insertion marker -->
+## [v0.2.0](https://github.com/Huy-DNA/pasync/releases/tag/v0.2.0) - 2024-05-30
+
+<small>[Compare with first commit](https://github.com/Huy-DNA/pasync/compare/39dcb9c42984191ff61a5b4ade4b5291c4c239c3...v0.2.0)</small>
 
 ### Fixed
 
@@ -31,4 +40,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - fix: hide Task ([dac8a72](https://github.com/Huy-DNA/pasync/commit/dac8a72ac8140d790ee4702cbbbe69abce39265e) by Huy-DNA).
 - fix: import path ([63fe318](https://github.com/Huy-DNA/pasync/commit/63fe318d4ee7cbc7a39ead131cea77e221745042) by Huy-DNA).
 
-<!-- insertion marker -->

@@ -30,6 +30,7 @@ class Runner():
             return [task.last_result for task in tasks]
 
     def run_task(self, awaitable: Awaitable):
+
         task = _Task(awaitable)
         if self.__non_blocking:
             self.__run_non_blocking(task)
