@@ -38,7 +38,7 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
                     except Exception as e:
                         reject(e)
 
-                self.__awaitable = wrapper
+                self.__awaitable = wrapper()
 
                 return
 
@@ -57,7 +57,7 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
                     except Exception as e:
                         reject(e)
 
-                self.__awaitable = wrapper
+                self.__awaitable = wrapper()
 
                 return
 
