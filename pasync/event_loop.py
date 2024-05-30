@@ -1,6 +1,6 @@
 from enum import Enum
 import threading
-from typing import Awaitable, List, Optional
+from typing import Awaitable, Optional
 from collections import deque
 from threading import Thread
 
@@ -13,7 +13,7 @@ class _RunMode(Enum):
     STOP_SIGNALLED = 3
 
 class EventLoop():
-    def __init__(self, *tasks: List[_Task]):
+    def __init__(self, *tasks: _Task):
         self.__task_queue = deque(tasks) 
         self.__run_mode = _RunMode.IDLE
         self.__push_cv = threading.Condition()
