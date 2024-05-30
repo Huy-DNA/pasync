@@ -68,21 +68,25 @@ class EventLoop():
             raise Exception("The event loop is already running")
         self.__run_mode = _RunMode.BLOCKING
 
+        result = None
+
         while task := self.__dequeue():
             try:
                 task.step()
                 self.__queue(task)
             except StopIteration:
-                pass
+                result = task.last_result
         
         self.__run_mode = _RunMode.IDLE
+
+        return result
 
     @property
     def thread(self) -> Optional[Thread]:
         return self.__thread
 
     def __queue(self, task: _Task):
-        self.__task_queue.append(task)
+        self.__task_queue .append(task)
 
     def __dequeue(self) -> Optional[_Task]:
         if len(self.__task_queue) == 0:
