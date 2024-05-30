@@ -7,4 +7,8 @@ class Task():
         self.last_result = None
 
     def step(self):
-        self.last_result = self.coro.send(self.last_result)
+        try:
+            self.last_result = self.coro.send(self.last_result)
+        except StopIteration as e:
+            self.last_result = e.value
+            raise e
