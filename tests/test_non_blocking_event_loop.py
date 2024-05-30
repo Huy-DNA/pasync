@@ -12,6 +12,6 @@ def test_simple():
         await bye_async()
 
     with Runner(non_blocking = True) as runner:
-        runner.run(hello_async())
-        runner.run(bye_async())
-        runner.run(greeting_async())
+        runner.run_all(hello_async())
+        runner.run_all(bye_async())
+        runner.run_all(greeting_async())
