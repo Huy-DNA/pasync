@@ -5,8 +5,6 @@ import inspect
 
 from typing import Any, Callable, Awaitable, Generic, Optional, TypeVar, Union
 
-from pasync.task import Task as _Task
-
 T1 = TypeVar("T1")
 E1 = TypeVar("E1")
 T2 = TypeVar("T2")
