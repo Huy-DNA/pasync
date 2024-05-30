@@ -20,7 +20,7 @@ class PromiseState(Enum):
     Fulfilled = 2
     Error = 3
 
-class Promise(Generic[T1, E1, T2, E2]):
+class Promise(Generic[T1, E1, T2, E2], Awaitable):
     def __init__(
         self,
         callback: Union[
@@ -34,14 +34,36 @@ class Promise(Generic[T1, E1, T2, E2]):
 
         def resolve(value: T1):
             if inspect.isawaitable(value):
-                self.__task = _Task(value)
+                async def wrapper():
+                    try:
+                        resolve(await value)
+                    except Exception as e:
+                        reject(e)
+
+                self.__awaitable = wrapper
+
                 return
+
+            self.__awaitable = None
+
             nonlocal disable_error
             self.__result = value
             disable_error = True
             self.__state = PromiseState.Fulfilled
 
         def reject(error: Union[E1, Exception]):
+            if inspect.isawaitable(error):
+                async def wrapper():
+                    try:
+                        reject(await error)
+                    except Exception as e:
+                        reject(e)
+
+                self.__awaitable = wrapper
+
+                return
+
+            self.__awaitable = None
             nonlocal disable_error
             self.__error = error
             disable_error = True
@@ -58,15 +80,14 @@ class Promise(Generic[T1, E1, T2, E2]):
                     reject(e)
         
         self.__awaitable = asyncified()
-        self.__task = _Task(self.__awaitable)
 
     @property
     def state(self):
         return self.__state
 
-    @property
-    def task(self):
-        return self.__task
+    def __await__(self):
+        while self.__awaitable:
+            self.__awaitable = yield self.__awaitable
 
     def then(
         self,
