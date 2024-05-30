@@ -21,7 +21,7 @@ class EventLoop():
 
     def queue(self, awaitable: Awaitable):
         if self.__run_mode == _RunMode.STOP_SIGNALLED:
-            raise Exception("Warning: Queuing a task on an event queue that was signalled to stop has no effect") 
+            raise Exception("Queuing a task on an event queue that was signalled to stop has no effect") 
 
         self.__queue(_Task(awaitable))
         
