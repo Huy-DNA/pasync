@@ -93,7 +93,7 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
             Callable[[T1], Awaitable[T2]]],
         handle: Optional[Union[
             Callable[[E1], T2],
-            Callable[[E1], Awaitable[T2]]]],
+            Callable[[E1], Awaitable[T2]]]] = None,
     ) -> Promise[T2, E2, T3, E3]:
         async def thenify(
             resolve: Callable[[T2], None],
