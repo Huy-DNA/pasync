@@ -34,7 +34,7 @@ class Runner():
         if self.__non_blocking:
             self.__run_non_blocking(task)
         else:
-            self.__run_non_blocking(task)
+            self.__run_blocking(task)
             return task.last_result
         
     def __run_blocking(self, *tasks: _Task):
