@@ -1,6 +1,6 @@
 from enum import Enum
 import threading
-from typing import Awaitable, Optional
+from typing import Awaitable, Optional, Union
 from collections import deque
 from threading import Thread
 
@@ -13,20 +13,21 @@ class _RunMode(Enum):
     STOP_SIGNALLED = 3
 
 class EventLoop():
-    def __init__(self, *tasks: _Task):
-        self.__task_queue = deque(tasks) 
+    def __init__(self, *tasks: Union[Awaitable, _Task]):
+        self.__task_queue = deque([_Task(task) if not isinstance(task, _Task) else task for task in tasks])
         self.__run_mode = _RunMode.IDLE
         self.__push_cv = threading.Condition()
         self.__thread = None
 
-    def queue(self, awaitable: Awaitable):
+    def queue(self, task: Union[Awaitable, _Task]):
         if self.__run_mode == _RunMode.STOP_SIGNALLED:
             raise Exception("Queuing a task on an event queue that was signalled to stop has no effect") 
 
         if self.__run_mode == _RunMode.BLOCKING:
             raise Exception("Can not queue a task on an already running blocking event loop")
 
-        self.__queue(_Task(awaitable))
+        if not isinstance(task, _Task):
+            self.__queue(_Task(task))
         
         if self.__run_mode == _RunMode.NON_BLOCKING:
             with self.__push_cv:

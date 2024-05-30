@@ -25,6 +25,12 @@ class Runner():
             self.__run_non_blocking(awaitable, *awaitables)
         else:
             self.__run_blocking(awaitable, *awaitables)
+
+    def run_one_task(self, awaitable: Awaitable):
+        if self.__non_blocking:
+            self.__run_non_blocking(awaitable)
+        else:
+            self.__run_non_blocking(awaitable)
         
     def __run_blocking(self, *awaitables: Awaitable):
         [self.__event_loop.queue(task) for task in awaitables]
