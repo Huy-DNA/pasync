@@ -23,6 +23,9 @@ class EventLoop():
         if self.__run_mode == _RunMode.STOP_SIGNALLED:
             raise Exception("Queuing a task on an event queue that was signalled to stop has no effect") 
 
+        if self.__run_mode == _RunMode.BLOCKING:
+            raise Exception("Can not queue a task on an already running blocking event loop")
+
         self.__queue(_Task(awaitable))
         
         if self.__run_mode == _RunMode.NON_BLOCKING:
