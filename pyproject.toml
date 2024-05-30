@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pasync"
-version = "0.2.0"
+version = "0.2.1"
 description = "An event loop for python async"
 authors = ["Huy-DNA <huydo862003@gmail.com>"]
 readme = "README.md"
