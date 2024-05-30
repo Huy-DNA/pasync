@@ -28,6 +28,8 @@ class EventLoop():
 
         if not isinstance(task, _Task):
             self.__queue(_Task(task))
+        else:
+            self.__queue(task)
         
         if self.__run_mode == _RunMode.NON_BLOCKING:
             with self.__push_cv:
