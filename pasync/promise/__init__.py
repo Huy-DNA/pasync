@@ -60,7 +60,6 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
                 self.__awaitable = wrapper()
 
                 return
-
             self.__awaitable = None
             nonlocal disable_error
             self.__error = error
@@ -133,9 +132,10 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
                         if not handle:
                             reject(any_error)
                             return
-                        handle_result = handle(any_error)
+                        handle_result: Any = handle(any_error)
                         while inspect.isawaitable(handle_result):
                             handle_result = await handle_result 
+                        resolve(handle_result)
                         return handle_result
             except Exception as e:
                 reject(e)
