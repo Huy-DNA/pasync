@@ -42,3 +42,11 @@ def test_arithmetic():
 
         promise = Promise(promise_3).then(lambda num: num + 1).catch(add_2)
         assert runner.run_task(promise) == 4
+
+def test_throw_in_promise():
+    def throw_3(resolve, reject):
+        raise Exception(3)
+
+    with Runner() as runner:
+        promise = Promise(throw_3).then(lambda num: num + 1).catch(lambda e: e)
+        assert f"{runner.run_task(promise)}" == "3"
