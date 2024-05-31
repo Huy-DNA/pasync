@@ -99,7 +99,9 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
             result = yield from identity().__await__()
         while self.__awaitable:
             result = yield from self.__awaitable.__await__()
+
         self.__result = result
+
         return result
 
     def then(
