@@ -89,6 +89,10 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
         return self.__state
 
     def __await__(self):
+        if not self.__awaitable:
+            async def identity():
+                return self.__result
+            return identity().__await__()
         while self.__awaitable:
             return self.__awaitable.__await__()
 
@@ -105,7 +109,7 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
             resolve: Callable[[T2], None],
             reject: Callable[[Union[E2, Exception]], None],
         ) -> Any:
-            await self.__awaitable
+            await self
             try:
                 match self.__state:
                     case PromiseState.Fulfilled:
@@ -140,7 +144,7 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
             resolve: Callable[[T2], None],
             reject: Callable[[Union[E2, Exception]], None],
         ) -> Any:
-            await self.__awaitable
+            await self
             try:
                 if self.__state == PromiseState.Error:
                     any_error: Any = self.__error
