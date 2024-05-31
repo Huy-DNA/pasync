@@ -39,3 +39,6 @@ def test_arithmetic():
         
         promise = Promise(promise_5).then(lambda num: num + 1).catch(add_2)
         assert runner.run_task(promise) == 7
+
+        promise = Promise(promise_3).then(lambda num: num + 1).catch(add_2)
+        assert runner.run_task(promise) == 4

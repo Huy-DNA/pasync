@@ -161,6 +161,9 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
                         handle_result = await handle_result 
                     handle_result: Any = handle_result
                     resolve(handle_result)
+                elif self.__state == PromiseState.Fulfilled:
+                    any_result: Any = self.__result
+                    resolve(any_result)
             except Exception as e:
                 reject(e)
 
