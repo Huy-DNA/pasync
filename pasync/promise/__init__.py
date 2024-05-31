@@ -92,9 +92,9 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
         if not self.__awaitable:
             async def identity():
                 return self.__result
-            return identity().__await__()
+            return (yield from identity().__await__())
         while self.__awaitable:
-            return self.__awaitable.__await__()
+            return (yield from self.__awaitable.__await__())
 
     def then(
         self,
