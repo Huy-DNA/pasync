@@ -70,7 +70,9 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
         async def asyncified():
             try:
                 self.__state = PromiseState.Pending
-                callback(resolve, reject)
+                result = callback(resolve, reject)
+                if inspect.isawaitable(result):
+                    await result
                 
                 if inspect.isawaitable(self.__result):
                     self.__result = await self.__result
@@ -89,12 +91,16 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
         return self.__state
 
     def __await__(self):
+        result = None
+
         if not self.__awaitable:
             async def identity():
                 return self.__result
-            return (yield from identity().__await__())
+            result = yield from identity().__await__()
         while self.__awaitable:
-            return (yield from self.__awaitable.__await__())
+            result = yield from self.__awaitable.__await__()
+        self.__result = result
+        return result
 
     def then(
         self,
