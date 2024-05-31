@@ -136,7 +136,7 @@ class Promise(Generic[T1, E1, T2, E2], Awaitable):
                         handle_result = handle(any_error)
                         while inspect.isawaitable(handle_result):
                             handle_result = await handle_result 
-                        handle_result: Any = handle_result
+                        return handle_result
             except Exception as e:
                 reject(e)
 
