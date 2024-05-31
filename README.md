@@ -2,6 +2,12 @@
 
 This minimal package is mainly used to explore implementing an async runtime in Python.
 
+## Installation
+
+```bash
+pip install pasync
+```
+
 ## Usage
 
 ### Runner
@@ -25,7 +31,7 @@ By default, a runner is blocking.
     return n
   
   with Runner() as runner:
-    assert runner.run(gen_num(1)) == 1
+    assert runner.run_task(gen_num(1)) == 1
     assert runner.gather(gen_num(1), gen_num(2)) == [1, 2]
   ```
 
@@ -35,9 +41,17 @@ By default, a runner is blocking.
     return n
   
   with Runner(non_blocking = True) as runner:
-    assert runner.run(gen_num(1)) == None                  # Not support returning results yet
+    assert runner.run_task(gen_num(1)) == None             # Not support returning results yet
     assert runner.gather(gen_num(1), gen_num(2)) == None   # Not support returning results yet
   ```
+
+### Promise
+
+`Promise` is intended to simulate `Promise` in js. Its usage and semantics should be the same.
+
+`Promise` itself is an awaitable, so it can be passed to `Runner.run_task`
+
+`Promise.then` and `Promise.catch` return another promise.
 
 ## Pitfalls
 
