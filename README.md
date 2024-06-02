@@ -1,4 +1,5 @@
 # pasync - A simple event loop for async python
+[![PyPI Version](https://img.shields.io/pypi/v/pasync.svg)](https://pypi.python.org/pypi/pasync)
 
 This minimal package is mainly used to explore implementing an async runtime in Python.
 
